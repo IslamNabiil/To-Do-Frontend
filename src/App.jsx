@@ -12,6 +12,7 @@ function App() {
     title: "",
     description: "",
   });
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchTasks = async () => {
     try {
@@ -19,6 +20,8 @@ function App() {
       setTasks(res.data);
     } catch (error) {
       console.error("Error fetching tasks:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -47,7 +50,7 @@ function App() {
     <div className="app-container">
       <h1>To-Do List Project 🚀</h1>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="form-container">
         <input
           type="text"
           name="title"
@@ -55,6 +58,7 @@ function App() {
           placeholder="Enter your Title here"
           value={formData.title}
           onChange={handleChange}
+          required
         />
         <textarea
           name="description"
@@ -62,10 +66,10 @@ function App() {
           placeholder="Enter your description here"
           value={formData.description}
           onChange={handleChange}
+          
         ></textarea>
         <button type="submit">Add Task</button>
       </form>
-      {tasks.length > 0 ? (
         <div className="tasks-container">
           <table>
             <thead>
@@ -77,12 +81,17 @@ function App() {
               </tr>
             </thead>
             <tbody>
-              {tasks.map((task, n) => (
-                <tr key={task._id}>
+              {isLoading ? (
+                <tr>
+                  <td colSpan="4" style={{ textAlign: "center" }}>Loading ...</td>
+                </tr>
+              ) : tasks.length > 0 ? (
+                tasks.map((task, n) => (
+                <tr key={task._id} className="task-row">
                   <td>{n + 1}</td>
                   <td>{task.title}</td>
                   <td>{task.description}</td>
-                  <td>
+                  <td className="actions-cell">
                     <button className="btn-done" title="Complete">
                       <FaCheck />
                     </button>
@@ -94,13 +103,14 @@ function App() {
                     </button>
                   </td>
                 </tr>
-              ))}
+              ))) : (
+                <tr>
+                  <td colSpan="4" style={{ textAlign: "center" }}>No tasks found. Add one above!</td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
-      ) : (
-        <p> Loading ... </p>
-      )}
     </div>
   );
 }
