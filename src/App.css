@@ -16,7 +16,7 @@
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: var(--bg-color);
   color: var(--text-color);
   display: flex;
@@ -118,6 +118,7 @@ form.form-container {
   justify-content: center;
 }
 .actions-cell button {
+  width: 100%;
   background: none;
   border: none;
   cursor: pointer;
@@ -130,19 +131,25 @@ form.form-container {
   justify-content: center;
 }
 
-.actions-cell .btn-done { color: #ccc; }
+.actions-cell .btn-done {
+  color: #ccc;
+}
 .actions-cell .btn-done:hover {
   color: var(--success-color);
   background-color: #e6f4ea;
 }
 
-.actions-cell .btn-edit { color: #777; }
+.actions-cell .btn-edit {
+  color: #777;
+}
 .actions-cell .btn-edit:hover {
   color: var(--warning-color);
   background-color: #fff8e1;
 }
 
-.actions-cell .btn-delete { color: #777; }
+.actions-cell .btn-delete {
+  color: #777;
+}
 .actions-cell .btn-delete:hover {
   color: var(--danger-color);
   background-color: #f8d7da;
@@ -170,6 +177,7 @@ thead th:last-child {
 
 tbody td {
   padding: 12px 15px;
+  height: 5rem;
   border-bottom: 1px solid #eee;
   text-align: right;
   vertical-align: middle;
@@ -181,4 +189,26 @@ tbody td {
 
 tbody .task-row:hover {
   background-color: #f1f1f1;
+}
+
+@keyframes loading {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+.loading:nth-child(odd) {
+  background: linear-gradient(90deg, #f4f4f9 25%, #e0e0e0 37%, #f4f4f9 63%);
+  background-size: 400% 100%;
+  animation: loading 1.4s ease infinite;
+  border-radius: 8px;
+}
+.loading:nth-child(even) {
+  background: linear-gradient(90deg, #f4f4f9 25%, #e0e0e0 37%, #f4f4f9 63%);
+  background-size: 400% 100%;
+  animation: loading 0.6s ease infinite;
+  border-radius: 8px;
 }

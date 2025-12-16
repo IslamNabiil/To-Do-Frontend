@@ -66,27 +66,45 @@ function App() {
           placeholder="Enter your description here"
           value={formData.description}
           onChange={handleChange}
-          
         ></textarea>
         <button type="submit">Add Task</button>
       </form>
-        <div className="tasks-container">
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Actions</th>
+      <div className="tasks-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {isLoading ? (
+              <>
+              <tr className="task-row loading">
+                <td colSpan="4" style={{ textAlign: "center" }}>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {isLoading ? (
-                <tr>
-                  <td colSpan="4" style={{ textAlign: "center" }}>Loading ...</td>
-                </tr>
-              ) : tasks.length > 0 ? (
-                tasks.map((task, n) => (
+              <tr className="task-row loading">
+                <td colSpan="4" style={{ textAlign: "center" }}>
+                </td>
+              </tr>
+              <tr className="task-row loading">
+                <td colSpan="4" style={{ textAlign: "center" }}>
+                </td>
+              </tr>
+              <tr className="task-row loading">
+                <td colSpan="4" style={{ textAlign: "center" }}>
+                </td>
+              </tr>
+              <tr className="task-row loading">
+                <td colSpan="4" style={{ textAlign: "center" }}>
+                </td>
+              </tr>
+              </>
+            ) : tasks.length > 0 ? (
+              tasks.map((task, n) => (
                 <tr key={task._id} className="task-row">
                   <td>{n + 1}</td>
                   <td>{task.title}</td>
@@ -103,14 +121,17 @@ function App() {
                     </button>
                   </td>
                 </tr>
-              ))) : (
-                <tr>
-                  <td colSpan="4" style={{ textAlign: "center" }}>No tasks found. Add one above!</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4" style={{ textAlign: "center" }}>
+                  No tasks found. Add one above!
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
