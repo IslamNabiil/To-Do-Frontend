@@ -2,6 +2,9 @@
 import { useState, useEffect } from "react";
 import api from "./api/axios";
 import "./App.css";
+import { FaTrashAlt } from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
+import { FaCheck } from "react-icons/fa";
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -64,12 +67,36 @@ function App() {
       </form>
       {tasks.length > 0 ? (
         <div className="tasks-container">
-          {tasks.map((task) => (
-            <div key={task._id}>
-              <h3>{task.title}</h3>
-              <p>{task.description}</p>
-            </div>
-          ))}
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {tasks.map((task, n) => (
+                <tr key={task._id}>
+                  <td>{n + 1}</td>
+                  <td>{task.title}</td>
+                  <td>{task.description}</td>
+                  <td>
+                    <button className="btn-done" title="Complete">
+                      <FaCheck />
+                    </button>
+                    <button className="btn-edit" title="Edit">
+                      <FaEdit />
+                    </button>
+                    <button className="btn-delete" title="Delete">
+                      <FaTrashAlt />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       ) : (
         <p> Loading ... </p>

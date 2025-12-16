@@ -29,3 +29,9 @@ h1 {
   margin-bottom: 20px;
   color: #4a90e2;
 }
+table{
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  direction: rtl;
+}
