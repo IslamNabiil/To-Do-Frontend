@@ -106,6 +106,7 @@ form.form-container {
 /* Table Styles */
 .tasks-container {
   overflow-y: auto;
+  overflow-x: auto;
   flex: 1;
   border: 1px solid #eee;
   border-radius: 8px;
@@ -211,4 +212,33 @@ tbody .task-row:hover {
   background-size: 400% 100%;
   animation: loading 0.6s ease infinite;
   border-radius: 8px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  body {
+    padding-top: 10px;
+    align-items: flex-start;
+  }
+
+  .app-container {
+    width: 95%;
+    padding: 15px;
+    max-height: 95vh;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+  }
+
+  th,
+  td {
+    padding: 10px 8px;
+    font-size: 0.9rem;
+  }
+
+  .actions-cell button {
+    padding: 6px;
+  }
 }
