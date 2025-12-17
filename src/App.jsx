@@ -14,6 +14,7 @@ function App() {
     description: "",
   });
   const [isLoading, setIsLoading] = useState(true);
+  const [editingTaskId, setEditingTaskId] = useState(null);
 
   const fetchTasks = async () => {
     try {
@@ -33,14 +34,52 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/tasks", formData);
-      setTasks([...tasks, res.data]);
+      if (editingTaskId) {
+        const res = await api.patch(`/tasks/${editingTaskId}`, formData);
+        setTasks(
+          tasks.map((task) => (task._id === editingTaskId ? res.data : task))
+        );
+        toast.success("Task updated successfully!");
+        setEditingTaskId(null);
+      } else {
+        const res = await api.post("/tasks", formData);
+        setTasks([...tasks, res.data]);
+        toast.success(formData.title + " added successfully!", {
+          duration: 2000,
+        });
+      }
       setFormData({ title: "", description: "" });
-      toast.success(formData.title + " added successfully!", {
-        duration: 2000,
-      });
     } catch (error) {
-      console.error("Error adding task:", error);
+      console.error("Error saving task:", error);
+    }
+  };
+
+  const handleEdit = (taskId) => {
+    const taskToEdit = tasks.find((task) => task._id === taskId);
+    setFormData({
+      title: taskToEdit.title,
+      description: taskToEdit.description,
+    });
+    setEditingTaskId(taskId);
+  };
+
+  const handleDelete = async (taskId) => {
+    if ( !window.confirm("Are you sure you want to delete this task?") ) {
+      return;
+    }
+    try {
+      await api.delete(`/tasks/${taskId}`);
+      setTasks(tasks.filter((task) => task._id !== taskId));
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    } finally {
+      fetchTasks();
+      toast.success(
+        tasks.find((t) => t._id === taskId)?.title + " deleted successfully!",
+        {
+          duration: 2000,
+        }
+      );
     }
   };
 
@@ -70,7 +109,7 @@ function App() {
           value={formData.description}
           onChange={handleChange}
         ></textarea>
-        <button type="submit">Add Task</button>
+        <button type="submit">{editingTaskId ? "Update Task" : "Add Task"}</button>
       </form>
       <div className="tasks-container">
         <table>
@@ -111,10 +150,18 @@ function App() {
                     <button className="btn-done" title="Complete">
                       <FaCheck />
                     </button>
-                    <button className="btn-edit" title="Edit">
+                    <button
+                      className="btn-edit"
+                      title="Edit"
+                      onClick={() => handleEdit(task._id)}
+                    >
                       <FaEdit />
                     </button>
-                    <button className="btn-delete" title="Delete">
+                    <button
+                      className="btn-delete"
+                      title="Delete"
+                      onClick={() => handleDelete(task._id)}
+                    >
                       <FaTrashAlt />
                     </button>
                   </td>
