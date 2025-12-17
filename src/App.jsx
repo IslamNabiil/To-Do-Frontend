@@ -5,6 +5,7 @@ import "./App.css";
 import { FaTrashAlt } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -35,13 +36,15 @@ function App() {
       const res = await api.post("/tasks", formData);
       setTasks([...tasks, res.data]);
       setFormData({ title: "", description: "" });
+      toast.success(formData.title + " added successfully!", {
+        duration: 2000,
+      });
     } catch (error) {
       console.error("Error adding task:", error);
     }
   };
 
   // Fetch tasks when the component mounts
-
   useEffect(() => {
     fetchTasks();
   }, []);
@@ -82,26 +85,21 @@ function App() {
           <tbody>
             {isLoading ? (
               <>
-              <tr className="task-row loading">
-                <td colSpan="4" style={{ textAlign: "center" }}>
-                </td>
-              </tr>
-              <tr className="task-row loading">
-                <td colSpan="4" style={{ textAlign: "center" }}>
-                </td>
-              </tr>
-              <tr className="task-row loading">
-                <td colSpan="4" style={{ textAlign: "center" }}>
-                </td>
-              </tr>
-              <tr className="task-row loading">
-                <td colSpan="4" style={{ textAlign: "center" }}>
-                </td>
-              </tr>
-              <tr className="task-row loading">
-                <td colSpan="4" style={{ textAlign: "center" }}>
-                </td>
-              </tr>
+                <tr className="task-row loading">
+                  <td colSpan="4" style={{ textAlign: "center" }}></td>
+                </tr>
+                <tr className="task-row loading">
+                  <td colSpan="4" style={{ textAlign: "center" }}></td>
+                </tr>
+                <tr className="task-row loading">
+                  <td colSpan="4" style={{ textAlign: "center" }}></td>
+                </tr>
+                <tr className="task-row loading">
+                  <td colSpan="4" style={{ textAlign: "center" }}></td>
+                </tr>
+                <tr className="task-row loading">
+                  <td colSpan="4" style={{ textAlign: "center" }}></td>
+                </tr>
               </>
             ) : tasks.length > 0 ? (
               tasks.map((task, n) => (

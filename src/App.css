@@ -215,7 +215,7 @@ tbody .task-row:hover {
 }
 
 /* Mobile Responsiveness */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   body {
     padding-top: 10px;
     align-items: flex-start;
@@ -241,4 +241,4 @@ tbody .task-row:hover {
   .actions-cell button {
     padding: 6px;
   }
-}
+} */
