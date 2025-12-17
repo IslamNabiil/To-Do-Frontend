@@ -35,9 +35,12 @@ function App() {
     e.preventDefault();
     try {
       if (editingTaskId) {
+        // التعديل الصح
         const res = await api.patch(`/tasks/${editingTaskId}`, formData);
         setTasks(
-          tasks.map((task) => (task._id === editingTaskId ? res.data : task))
+          tasks.map((task) =>
+            task._id === editingTaskId ? res.data.updatedTask : task
+          ) // 👈 ركز هنا
         );
         toast.success("Task updated successfully!");
         setEditingTaskId(null);
@@ -54,32 +57,34 @@ function App() {
     }
   };
 
-  const handleEdit = (taskId) => {
-    const taskToEdit = tasks.find((task) => task._id === taskId);
-    setFormData({
-      title: taskToEdit.title,
-      description: taskToEdit.description,
-    });
-    setEditingTaskId(taskId);
+  const handleEdit = async (taskId) => {
+    try {
+      const taskToEdit = await tasks.find((task) => task._id === taskId);
+      setFormData({
+        title: taskToEdit.title,
+        description: taskToEdit.description,
+      });
+      setEditingTaskId(taskId);
+    } catch (error) {
+      console.error("Error editing task:", error);
+    }
   };
 
   const handleDelete = async (taskId) => {
-    if ( !window.confirm("Are you sure you want to delete this task?") ) {
+    if (!window.confirm("Are you sure you want to delete this task?")) {
       return;
     }
     try {
       await api.delete(`/tasks/${taskId}`);
       setTasks(tasks.filter((task) => task._id !== taskId));
-    } catch (error) {
-      console.error("Error deleting task:", error);
-    } finally {
-      fetchTasks();
       toast.success(
         tasks.find((t) => t._id === taskId)?.title + " deleted successfully!",
         {
           duration: 2000,
         }
       );
+    } catch (error) {
+      console.error("Error deleting task:", error);
     }
   };
 
@@ -109,7 +114,9 @@ function App() {
           value={formData.description}
           onChange={handleChange}
         ></textarea>
-        <button type="submit">{editingTaskId ? "Update Task" : "Add Task"}</button>
+        <button type="submit">
+          {editingTaskId ? "Update Task" : "Add Task"}
+        </button>
       </form>
       <div className="tasks-container">
         <table>
